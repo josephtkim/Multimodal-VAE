@@ -2,7 +2,7 @@
 
 This repository contains the implementation of the multimodal VAE architecture described in my paper [Exploring Effectiveness of Multimodal Variational Autoencoders on Text-Image Tasks](./multimodalVAE.pdf).
 
-**Revised November 2026:** Corrected KL notation, descriptions of threshold selection, negative sampling, loss functions to match the code. Added architecture details, more related work, and additional limitations. The reported results are unchanged.
+**Revised November 2026:** Corrected KL notation, descriptions of threshold selection, negative sampling, loss functions to match the code. Added architecture details, more related work, and additional limitations. Corrected confusion matrix rows and positive class for precision, recall and F1, which were mislabeled. Accuracy and reported metric values are unchanged.
 
 ## Overview
 
@@ -29,7 +29,7 @@ The model consists of two VAEs (Text VAE and Image VAE) with a shared latent spa
 
 We use the CelebAMask-HQ dataset (Lee et al., 2020) with the following specifications:
 - 5,000 examples (split 90/10 for training/validation) selected from the full 30,000 example dataset
-- Images resized to 64x64 resolution (from original 512x512)
+- Images resized to 64x64 resolution
 - 10 binary attributes (young, male, female, smiling, eyeglasses, black hair, blond hair, bald, mustache, wearing lipstick)
 
 ![Dataset Examples](assets/random_dataset_examples.png)
@@ -46,8 +46,8 @@ The CelebAMask-HQ dataset is available for non-commercial research purposes only
 #### Confusion Matrix (Latent Dimension = 256)
 |                     | Predicted Mismatch | Predicted Match |
 |---------------------|--------------------|-----------------|
-| **Actual Mismatch** | 427                | 73              |
-| **Actual Match**    | 40                 | 460             |
+| **Actual Mismatch** | 460                | 40              |
+| **Actual Match**    | 73                 | 427             |
 
 #### Performance Metrics for Different Latent Dimensions
 | Latent Dim | Accuracy | Precision | Recall | F1 Score |
@@ -56,8 +56,10 @@ The CelebAMask-HQ dataset is available for non-commercial research purposes only
 | **256**    | 0.89     | 0.86      | 0.92   | 0.89     |
 | **512**    | 0.88     | 0.86      | 0.91   | 0.88     |
 
+Precision, recall, and F1 treat Mismatch as the positive class.
+
 ### Latent Space Visualization
-t-SNE visualization of image and text embeddings in the shared latent space, showing clear gender-based clustering and alignment between modalities:
+t-SNE visualization of image and text embeddings in the shared latent space, showing gender-based clustering in both modalities:
 ![Latent Space Alignment](assets/paired_tsne_2d_gender.png)
 
 ### Cross-Modal Generation Examples
@@ -91,7 +93,7 @@ The model uses a three-phase training strategy:
 - Random seed: 42
 - Optimizer: AdamW
   - betas: (0.5, 0.999)
-  - weight_decay: 0.02
+  - weight_decay: 0.01 (for VAE), 0.02 (for discriminator)
 
 ## Citation
 
