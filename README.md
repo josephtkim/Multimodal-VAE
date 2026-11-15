@@ -2,6 +2,8 @@
 
 This repository contains the implementation of the multimodal VAE architecture described in my paper [Exploring Effectiveness of Multimodal Variational Autoencoders on Text-Image Tasks](./multimodalVAE.pdf).
 
+Revised November 2026: Corrected KL notation, descriptions of threshold selection, negative sampling, loss functions to match the code. Added architecture details, more related work, and additional limitations. The reported results are unchanged.
+
 ## Overview
 
 The model consists of two VAEs (Text VAE and Image VAE) with a shared latent space, enabling the following tasks:
